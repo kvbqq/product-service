@@ -21,19 +21,10 @@ public class ProductController {
     private final ProductMapper mapper;
 
     @GetMapping
-    public List<ProductDto> getAllProducts(Pageable pageable) {
-        log.info("Fetching all products");
+    public List<ProductDto> getProducts(Pageable pageable, @RequestParam(required = false) String type) {
+        log.info("Fetching products");
 
-        return service.getAllProducts(pageable).stream()
-                .map(mapper::toDto)
-                .toList();
-    }
-
-    @GetMapping("/type/{type}")
-    public List<ProductDto> getProductsByType(Pageable pageable, @PathVariable String type) {
-        log.info("Fetching products with type: {}", type);
-
-        return service.getProductsByType(pageable, type).stream()
+        return service.getProducts(pageable, type).stream()
                 .map(mapper::toDto)
                 .toList();
     }
@@ -46,6 +37,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ProductDto createProduct(@RequestBody CreateProductCommand command) {
         log.info("Creating product with name: {}", command.getName());
 

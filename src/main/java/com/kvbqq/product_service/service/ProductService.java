@@ -18,17 +18,8 @@ import java.util.Locale;
 public class ProductService {
     private final ProductRepository repository;
 
-    public List<Product> getAllProducts(Pageable pageable) {
-        return repository.findAll(pageable).getContent();
-    }
-
-    public List<Product> getProductsByType(Pageable pageable, String type) {
-        try {
-            ProductType enumType = ProductType.valueOf(type.toUpperCase(Locale.ROOT));
-            return repository.findByType(pageable, enumType).getContent();
-        } catch (IllegalArgumentException ex) {
-            throw new ProductTypeNotFoundException("Unknown product type: " + type);
-        }
+    public List<Product> getProducts(Pageable pageable, String type) {
+        return type != null ? repository.findByType(pageable, ProductType.from(type)).getContent() : repository.findAll(pageable).getContent();
     }
 
     public Product getProductById(Long id) {
