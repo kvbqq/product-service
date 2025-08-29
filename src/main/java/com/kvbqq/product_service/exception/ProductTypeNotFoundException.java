@@ -1,7 +1,9 @@
 package com.kvbqq.product_service.exception;
 
-public class ProductTypeNotFoundException extends RuntimeException {
+import org.springframework.http.HttpStatus;
+
+public class ProductTypeNotFoundException extends ProductServiceException {
     public ProductTypeNotFoundException(String message) {
-        super(message);
+        super(message, HttpStatus.NOT_FOUND);
     }
 }
