@@ -20,7 +20,6 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductType type;
     private BigDecimal price;
-    private Integer stock;
     @ManyToMany
     @JoinTable(
             name = "product_configuration",
@@ -28,4 +27,24 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "configuration_id")
     )
     private List<Configuration> configurations;
+
+    public void update(Product product) {
+        this.name = product.getName();
+        this.type = product.getType();
+        this.price = product.getPrice();
+        this.configurations = product.getConfigurations();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id != null && id.equals(product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

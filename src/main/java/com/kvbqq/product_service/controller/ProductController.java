@@ -51,4 +51,11 @@ public class ProductController {
 
         service.removeProductById(id);
     }
+
+    @PutMapping("/{id}")
+    public ProductDto updateProduct(@PathVariable Long id, @RequestBody CreateProductCommand command) {
+        log.info("Updating product with id: {}", id);
+
+        return mapper.toDto(service.updateProduct(id, mapper.toEntity(command)));
+    }
 }

@@ -7,8 +7,8 @@ import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
-public class CreateProductCommand {
+public class CreateConfigurationCommand {
     private String name;
-    private ProductType type;
+    private String type;
     private BigDecimal price;
 }

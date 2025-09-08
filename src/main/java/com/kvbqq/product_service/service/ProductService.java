@@ -1,7 +1,6 @@
 package com.kvbqq.product_service.service;
 
 import com.kvbqq.product_service.exception.ProductNotFoundException;
-import com.kvbqq.product_service.exception.ProductTypeNotFoundException;
 import com.kvbqq.product_service.model.Product;
 import com.kvbqq.product_service.model.ProductType;
 import com.kvbqq.product_service.repository.ProductRepository;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +17,9 @@ public class ProductService {
     private final ProductRepository repository;
 
     public List<Product> getProducts(Pageable pageable, String type) {
-        return type != null ? repository.findByType(pageable, ProductType.from(type)).getContent() : repository.findAll(pageable).getContent();
+        return type != null
+                ? repository.findByType(pageable, ProductType.from(type)).getContent()
+                : repository.findAll(pageable).getContent();
     }
 
     public Product getProductById(Long id) {
@@ -36,5 +36,13 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException("Product with given id does not exist"));
 
         repository.delete(product);
+    }
+
+    public Product updateProduct(Long id, Product product) {
+        Product existingProduct = repository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Product with given id does not exist"));
+        existingProduct.update(product);
+
+        return repository.save(existingProduct);
     }
 }

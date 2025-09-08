@@ -15,6 +15,5 @@ public class ProductDto {
     private String name;
     private ProductType type;
     private BigDecimal price;
-    private Integer stock;
     private List<ConfigurationDto> configurations;
 }

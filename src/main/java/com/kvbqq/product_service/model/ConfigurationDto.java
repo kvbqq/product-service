@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ConfigurationDto {
     private Long id;
-    private Long productId;
     private String name;
     private String type;
     private BigDecimal price;
