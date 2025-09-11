@@ -18,14 +18,14 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService service;
-    private final ProductMapper mapper;
+    private final ProductMapper productMapper;
 
     @GetMapping
     public List<ProductDto> getProducts(Pageable pageable, @RequestParam(required = false) String type) {
         log.info("Fetching products");
 
         return service.getProducts(pageable, type).stream()
-                .map(mapper::toDto)
+                .map(productMapper::toDto)
                 .toList();
     }
 
@@ -33,7 +33,7 @@ public class ProductController {
     public ProductDto getProductById(@PathVariable Long id) {
         log.info("Fetching product with id: {}", id);
 
-        return mapper.toDto(service.getProductById(id));
+        return productMapper.toDto(service.getProductById(id));
     }
 
     @PostMapping
@@ -41,7 +41,7 @@ public class ProductController {
     public ProductDto createProduct(@RequestBody CreateProductCommand command) {
         log.info("Creating product with name: {}", command.getName());
 
-        return mapper.toDto(service.createProduct(mapper.toEntity(command)));
+        return productMapper.toDto(service.createProduct(productMapper.toEntity(command)));
     }
 
     @DeleteMapping("/{id}")
@@ -56,6 +56,6 @@ public class ProductController {
     public ProductDto updateProduct(@PathVariable Long id, @RequestBody CreateProductCommand command) {
         log.info("Updating product with id: {}", id);
 
-        return mapper.toDto(service.updateProduct(id, mapper.toEntity(command)));
+        return productMapper.toDto(service.updateProduct(id, productMapper.toEntity(command)));
     }
 }

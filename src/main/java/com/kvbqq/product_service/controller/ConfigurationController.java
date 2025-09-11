@@ -18,14 +18,14 @@ import java.util.List;
 @RequestMapping("/configurations")
 public class ConfigurationController {
     private final ConfigurationService service;
-    private final ConfigurationMapper mapper;
+    private final ConfigurationMapper configurationMapper;
 
     @GetMapping
     public List<ConfigurationDto> getConfigurations(Pageable pageable) {
-        log.info("Fetching configurations");
+        log.info("Fetching all configurations");
 
         return service.getConfigurations(pageable).stream()
-                .map(mapper::toDto)
+                .map(configurationMapper::toDto)
                 .toList();
     }
 
@@ -33,7 +33,7 @@ public class ConfigurationController {
     public ConfigurationDto getConfigurationById(@PathVariable Long id) {
         log.info("Fetching configuration with id: {}", id);
 
-        return mapper.toDto(service.getConfigurationById(id));
+        return configurationMapper.toDto(service.getConfigurationById(id));
     }
 
     @PostMapping
@@ -41,7 +41,7 @@ public class ConfigurationController {
     public ConfigurationDto createConfiguration(@RequestBody CreateConfigurationCommand command) {
         log.info("Creating configuration with name: {}", command.getName());
 
-        return mapper.toDto(service.createConfiguration(mapper.toEntity(command)));
+        return configurationMapper.toDto(service.createConfiguration(configurationMapper.toEntity(command)));
     }
 
     @DeleteMapping("/{id}")
@@ -56,6 +56,6 @@ public class ConfigurationController {
     public ConfigurationDto updateConfiguration(@PathVariable Long id, @RequestBody CreateConfigurationCommand command) {
         log.info("Updating configuration with id: {}", id);
 
-        return mapper.toDto(service.updateConfiguration(id, mapper.toEntity(command)));
+        return configurationMapper.toDto(service.updateConfiguration(id, configurationMapper.toEntity(command)));
     }
 }
